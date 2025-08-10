@@ -59,7 +59,13 @@ async function checkSubscription(userId) {
 }
 
 // Express ga Telegram webhook callback o‘rnatamiz
-app.use(bot.webhookCallback(WEBHOOK_PATH));
+app.use(express.json());
+
+app.post(WEBHOOK_PATH, (req, res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
+});
+
 
 // Webhook URL (Render URL + webhook path)
 const DOMAIN = process.env.DOMAIN || 'https://your-render-url.onrender.com';
